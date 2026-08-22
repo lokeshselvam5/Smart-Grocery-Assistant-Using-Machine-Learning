@@ -1,0 +1,10 @@
+{
+    "admin_mds": {
+        "password": "admin@mds123",
+        "role": "admin"
+    },
+    "loki": {
+        "password": "2007",
+        "role": "customer"
+    }
+}

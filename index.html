@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muthu Department Store | POS System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Auth Screen -->
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-box">
+            <div class="logo-wrapper" style="justify-content: center; margin-bottom: 5px;">
+                <img src="MDS.png" alt="MDS Logo" class="logo-img" style="width: 50px; height: 50px;">
+            </div>
+            <h1 class="shop-name" style="text-align: center; color: var(--primary); margin-bottom: 25px; font-size: 1.8rem;">Muthu Department Store</h1>
+            
+            <div id="login-container">
+                <h2 style="text-align: center; margin-bottom: 20px;">Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
+                    <div id="login-error" style="color: red; margin-top: 10px; text-align: center;"></div>
+                </form>
+                <div style="text-align: center; margin-top: 15px;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Don't have an account? <button id="show-signup" class="btn-text" style="color: var(--primary); padding: 0;">Sign Up</button></span>
+                </div>
+            </div>
+
+            <div id="signup-container" style="display: none;">
+                <h2 style="text-align: center; margin-bottom: 20px;">Sign Up</h2>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label>Choose Username</label>
+                        <input type="text" id="signup-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Choose Password</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Sign Up</button>
+                    <div id="signup-error" style="color: red; margin-top: 10px; text-align: center;"></div>
+                </form>
+                <div style="text-align: center; margin-top: 15px;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Already have an account? <button id="show-login" class="btn-text" style="color: var(--primary); padding: 0;">Login</button></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="app-container" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-wrapper">
+                    <img src="MDS.png" alt="MDS Logo" class="logo-img">
+                    <h1 class="shop-name">MDS</h1>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-view="pos">
+                    <span class="icon">🛒</span>
+                    <span class="label">Point of Sale</span>
+                </button>
+                <button class="nav-btn" data-view="inventory">
+                    <span class="icon">📦</span>
+                    <span class="label">Inventory</span>
+                </button>
+                <button class="nav-btn" data-view="reports">
+                    <span class="icon">📊</span>
+                    <span class="label">Reports</span>
+                </button>
+                <button class="nav-btn" data-view="calculator">
+                    <span class="icon">🧮</span>
+                    <span class="label">Calculator</span>
+                </button>
+                <button class="nav-btn" data-view="assistance">
+                    <span class="icon">🤖</span>
+                    <span class="label">Assistance</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="nav-btn" style="margin-bottom: 10px; color: var(--danger);">
+                    <span class="icon">🚪</span>
+                    <span class="label">Logout</span>
+                </button>
+                <div id="live-clock" class="clock"></div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- POS View -->
+            <section id="pos-view" class="view">
+                <header class="view-header">
+                    <h2>Categories</h2>
+                    <div class="search-bar">
+                        <input type="text" id="pos-search" placeholder="Search products (Name or Category)...">
+                    </div>
+                </header>
+                <div class="pos-layout">
+                    <div class="product-grid-container">
+                        <div class="category-nav-container">
+                            <button id="cat-scroll-left" class="scroll-btn left">‹</button>
+                            <div class="category-tabs" id="category-tabs">
+                                <!-- Categories will be injected here -->
+                            </div>
+                            <button id="cat-scroll-right" class="scroll-btn right">›</button>
+                        </div>
+                        <div class="product-grid" id="product-grid">
+                            <!-- Products will be injected here -->
+                        </div>
+                    </div>
+                    <aside class="cart-container">
+                        <div class="cart-header">
+                            <h3>Current Bill</h3>
+                            <button id="clear-cart" class="btn-text">Clear All</button>
+                        </div>
+                        <div class="cart-items" id="cart-items">
+                            <!-- Cart items will be injected here -->
+                        </div>
+                        <div class="cart-summary">
+                            <div class="form-group">
+                                <label>Customer Name</label>
+                                <input type="text" id="cart-customer-name" placeholder="Optional">
+                            </div>
+                            <div class="summary-line">
+                                <span>Subtotal</span>
+                                <span id="cart-subtotal">₹0.00</span>
+                            </div>
+                            <div class="summary-line total">
+                                <span>Grand Total</span>
+                                <span id="cart-total">₹0.00</span>
+                            </div>
+                            <button id="checkout-btn" class="btn-primary">Checkout & Print Bill</button>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <!-- Inventory View -->
+            <section id="inventory-view" class="view" style="display: none;">
+                <header class="view-header">
+                    <div class="view-title-area" style="display: flex; align-items: center; gap: 16px;">
+                        <h2>Inventory Management</h2>
+                        <span class="product-count-badge" id="inventory-product-count"
+                            style="background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">0
+                            Products</span>
+                    </div>
+                    <div class="inventory-controls" style="display: flex; align-items: center; gap: 16px;">
+                        <div class="search-bar">
+                            <input type="text" id="inventory-search"
+                                placeholder="Search by name, category, or subcategory..." style="width: 300px;">
+                        </div>
+                        <button class="btn-primary" id="add-product-btn">+ Add Product</button>
+                    </div>
+                </header>
+                <div class="inventory-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px; text-align: center;">S.No</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Price (₹)</th>
+                                <th>Unit</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table-body">
+                            <!-- Inventory items will be injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+            <!-- Reports View -->
+            <section id="reports-view" class="view" style="display: none;">
+                <header class="view-header">
+                    <h2>Sales Reports</h2>
+                </header>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-label">Total Revenue</span>
+                        <span class="metric-value" id="total-revenue">₹0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Total Bills</span>
+                        <span class="metric-value" id="total-bills">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Avg. Bill Value</span>
+                        <span class="metric-value" id="avg-bill">₹0</span>
+                    </div>
+                </div>
+                
+                <div class="sales-history">
+                    <h3>Recent Transactions</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date/Time</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sales-history-body">
+                            <!-- Sales history will be injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Calculator View -->
+            <section id="calculator-view" class="view" style="display: none;">
+                <header class="view-header">
+                    <h2>Calculator</h2>
+                </header>
+                <div class="calculator-layout">
+                    <div class="calculator-container">
+                        <div class="calc-display-wrapper">
+                            <div class="calc-formula" id="calc-formula"></div>
+                            <div class="calc-display-main">
+                                <span id="calc-memory-indicator" class="calc-memory-indicator"></span>
+                                <div class="calc-display" id="calc-display">0</div>
+                            </div>
+                        </div>
+                        <div class="calc-buttons">
+                            <!-- Memory Buttons -->
+                            <button class="calc-btn btn-memory" data-action="memory-clear">MC</button>
+                            <button class="calc-btn btn-memory" data-action="memory-recall">MR</button>
+                            <button class="calc-btn btn-memory" data-action="memory-add">M+</button>
+                            <button class="calc-btn btn-memory" data-action="memory-subtract">M-</button>
+
+                            <!-- Row 2 -->
+                            <button class="calc-btn btn-clear" data-action="clear">AC</button>
+                            <button class="calc-btn btn-operator" data-action="delete">DEL</button>
+                            <button class="calc-btn btn-operator" data-action="percentage">%</button>
+                            <button class="calc-btn btn-operator" data-action="operator" data-val="/">/</button>
+
+                            <!-- Row 3 -->
+                            <button class="calc-btn" data-val="7">7</button>
+                            <button class="calc-btn" data-val="8">8</button>
+                            <button class="calc-btn" data-val="9">9</button>
+                            <button class="calc-btn btn-operator" data-action="operator" data-val="*">×</button>
+
+                            <!-- Row 4 -->
+                            <button class="calc-btn" data-val="4">4</button>
+                            <button class="calc-btn" data-val="5">5</button>
+                            <button class="calc-btn" data-val="6">6</button>
+                            <button class="calc-btn btn-operator" data-action="operator" data-val="-">-</button>
+
+                            <!-- Row 5 -->
+                            <button class="calc-btn" data-val="1">1</button>
+                            <button class="calc-btn" data-val="2">2</button>
+                            <button class="calc-btn" data-val="3">3</button>
+                            <button class="calc-btn btn-operator" data-action="operator" data-val="+">+</button>
+
+                            <!-- Row 6 -->
+                            <button class="calc-btn" data-action="toggle-sign">±</button>
+                            <button class="calc-btn" data-val="0">0</button>
+                            <button class="calc-btn" data-val=".">.</button>
+                            <button class="calc-btn btn-equal" data-action="calculate">=</button>
+                        </div>
+                    </div>
+                    <aside class="calc-history-container">
+                        <div class="history-header">
+                            <h3>History</h3>
+                            <button id="clear-calc-history" class="btn-text">Clear</button>
+                        </div>
+                        <div class="calc-history-items" id="calc-history-items">
+                            <!-- History will be injected here -->
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <!-- Assistance View -->
+            <section id="assistance-view" class="view" style="display: none;">
+                <header class="view-header">
+                    <h2>Smart Assistance</h2>
+                </header>
+                <div class="assistance-layout" style="display: flex; flex-direction: column; height: calc(100vh - 120px); background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden;">
+                    <div id="chat-messages" style="flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; background: #f8fafc;">
+                        <div class="chat-message bot" style="background: white; align-self: flex-start; padding: 12px 16px; border-radius: 12px; border: 1px solid #e2e8f0; max-width: 80%;">
+                            Hello! I am your store assistant. How can I help you today?
+                        </div>
+                    </div>
+                    <div class="chat-input-area" style="padding: 15px; border-top: 1px solid var(--border); background: white; display: flex; gap: 10px; align-items: center;">
+                        <input type="text" id="chat-input" placeholder="Type your message here..." style="flex: 1; padding: 16px; font-size: 1.1rem; border: 2px solid var(--border); border-radius: 8px;">
+                        <button id="chat-send-btn" class="btn-primary" style="padding: 10px; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;" title="Send">➤</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Add New Product</h3>
+            <form id="product-form">
+                <div class="form-row" style="grid-template-columns: 1fr;">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" id="prod-name" placeholder="e.g. Salt, Wheat" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" id="prod-category" placeholder="e.g. Noodles, Pasta" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" id="prod-price" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Unit</label>
+                        <input type="text" id="prod-unit" list="unit-options" placeholder="e.g. Kg, pcs" required>
+                        <datalist id="unit-options">
+                            <!-- Options populated dynamically from data.js via inventory.js -->
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Icon (Emoji)</label>
+                        <input type="text" id="prod-icon" placeholder="e.g. 🍝, 🍜">
+                        <div class="emoji-suggestion-picker" id="emoji-suggestion-picker"
+                            style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; padding: 8px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; max-height: 100px; overflow-y: auto;">
+                            <button type="button" class="emoji-btn" data-emoji="⚖️">⚖️</button>
+                            <button type="button" class="emoji-btn" data-emoji="🌾">🌾</button>
+                            <button type="button" class="emoji-btn" data-emoji="🥣">🥣</button>
+                            <button type="button" class="emoji-btn" data-emoji="🍾">🍾</button>
+                            <button type="button" class="emoji-btn" data-emoji="🧈">🧈</button>
+                            <button type="button" class="emoji-btn" data-emoji="🍚">🍚</button>
+                            <button type="button" class="emoji-btn" data-emoji="🌶️">🌶️</button>
+                            <button type="button" class="emoji-btn" data-emoji="🧂">🧂</button>
+                            <button type="button" class="emoji-btn" data-emoji="🍯">🍯</button>
+                            <button type="button" class="emoji-btn" data-emoji="🫛">🫛</button>
+                            <button type="button" class="emoji-btn" data-emoji="☕">☕</button>
+                            <button type="button" class="emoji-btn" data-emoji="🍪">🍪</button>
+                            <button type="button" class="emoji-btn" data-emoji="🍫">🍫</button>
+                            <button type="button" class="emoji-btn" data-emoji="🍜">🍜</button>
+                            <button type="button" class="emoji-btn" data-emoji="🥒">🥒</button>
+                            <button type="button" class="emoji-btn" data-emoji="🥫">🥫</button>
+                            <button type="button" class="emoji-btn" data-emoji="🥤">🥤</button>
+                            <button type="button" class="emoji-btn" data-emoji="🥜">🥜</button>
+                            <button type="button" class="emoji-btn" data-emoji="🥚">🥚</button>
+                            <button type="button" class="emoji-btn" data-emoji="👶">👶</button>
+                            <button type="button" class="emoji-btn" data-emoji="🛀">🛀</button>
+                            <button type="button" class="emoji-btn" data-emoji="💅">💅</button>
+                            <button type="button" class="emoji-btn" data-emoji="🦷">🦷</button>
+                            <button type="button" class="emoji-btn" data-emoji="🪥">🪥</button>
+                            <button type="button" class="emoji-btn" data-emoji="🧼">🧼</button>
+                            <button type="button" class="emoji-btn" data-emoji="🧴">🧴</button>
+                            <button type="button" class="emoji-btn" data-emoji="🧻">🧻</button>
+                            <button type="button" class="emoji-btn" data-emoji="🕯️">🕯️</button>
+                            <button type="button" class="emoji-btn" data-emoji="🪔">🪔</button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row" style="grid-template-columns: 1fr;">
+                    <div class="form-group">
+                        <label>Image URL (Optional)</label>
+                        <input type="text" id="prod-image" placeholder="https://unsplash.com/...">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="close-modal">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Receipt View Modal -->
+    <div id="receipt-modal" class="modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <h3>Transaction Receipt</h3>
+            <div id="receipt-modal-body"
+                style="margin: 20px 0; background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; max-height: 400px; overflow-y: auto; font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; color: #1e293b; line-height: 1.4;">
+                <!-- Receipt details will be injected here -->
+            </div>
+            <div class="modal-actions" style="justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn-secondary" onclick="closeModal('receipt-modal')">Close</button>
+                <button type="button" class="btn-secondary" id="print-receipt-btn">🖨️ Print</button>
+                <button type="button" class="btn-primary" id="download-pdf-btn">📥 Download PDF</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="data.js"></script>
+    <script src="pos.js"></script>
+    <script src="inventory.js"></script>
+    <script src="reports.js"></script>
+    <script src="calculator.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
