@@ -1264,3 +1264,131 @@ h3,
     color: white;
     align-self: flex-end;
 }
+
+/* Mobile & Tablet Responsive Media Queries */
+@media screen and (max-width: 992px) {
+    .app-container {
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 10px 16px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .sidebar-header {
+        margin-bottom: 0;
+    }
+
+    .logo-wrapper {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .logo-img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .shop-name {
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        padding-bottom: 2px;
+    }
+
+    .nav-btn {
+        padding: 8px 12px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+        gap: 6px;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main-content {
+        padding: 14px;
+        height: calc(100vh - 65px);
+        overflow-y: auto;
+    }
+
+    .pos-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+        gap: 16px;
+    }
+
+    .cart-container {
+        max-height: 500px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+        gap: 10px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .search-bar input {
+        width: 100%;
+    }
+
+    .login-box {
+        width: 90%;
+        max-width: 380px;
+        padding: 24px 18px;
+    }
+
+    .calc-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .assistance-layout {
+        height: calc(100vh - 160px) !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .product-card {
+        padding: 10px;
+    }
+
+    .product-info h4 {
+        font-size: 0.82rem;
+    }
+
+    .product-info .price {
+        font-size: 0.95rem;
+    }
+
+    .category-tab {
+        padding: 6px 14px;
+        font-size: 0.85rem;
+    }
+
+    .view-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+}
